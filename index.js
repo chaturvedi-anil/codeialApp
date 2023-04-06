@@ -5,6 +5,10 @@ const app= express();
 // this is for routes, it will automatically fetches the index.js in routes folder
 app.use('/', require('./routes'));
 
+// setup view engine
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
 app.listen(port, function(err)
 {
     if(err)
