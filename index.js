@@ -4,6 +4,10 @@ const app= express();
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
 
+// setting body parser middileware
+app.use(express.urlencoded());
+
+// statics files
 app.use(express.static('./assets'));
 app.use(expressLayouts);
 // extract style and script form sub pages to layout
