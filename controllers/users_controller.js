@@ -105,3 +105,11 @@ module.exports.createUser = function(req, res)
         }
     });
 }
+
+// logOut
+
+module.exports.logOut = function(req, res)
+{
+    res.clearCookie('user_id');
+    return res.redirect('/users/signIn');
+}
