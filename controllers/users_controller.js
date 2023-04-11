@@ -1,5 +1,40 @@
 const User = require('../models/user');
 
+module.exports.userProfile = function(req, res)
+{
+    if(req.cookies.user_id)
+    {
+        User.findById(req.cookies.user_id)
+        .then((user)=>
+        {
+            if(user)
+            {
+                return res.render('user_profile',{
+                    title: "User Profile",
+                    user:user
+                });
+            }
+            return res.redirect('/users/signIn');
+        })
+        .catch((err) =>
+        {
+            console.log(`error in finding user in database ${err}`);
+            return res.redirect('/users/signIn');
+        });
+    }
+    else
+    {
+        return res.redirect('/users/signIn');
+    }
+}
+
+module.exports.signIn = function(req, res)
+{
+    return res.render('sign_in',{
+        title: "Sign In"
+    });
+}
+
 module.exports.signUp=function(req, res)
 {
     return res.render('sign_up', {
@@ -10,47 +45,63 @@ module.exports.signUp=function(req, res)
 // for signing the user
 module.exports.createSession = function(req, res)
 {
-    let email=req.body.email;
-    let password=req.body.password;
-    User.find({email:email, password:password})
-    .then((userdata) =>
+    User.findOne({email:req.body.email})
+    .then((user) =>
     {
-        let userData=userdata[0];
-        return res.render('user_profile',{
-            title: "User Profile",
-            userData:userData,
-        });
+        if(user)
+        {   
+            if(user.password != req.body.password)
+            {
+                return res.redirect('back');
+            }
+            
+            // handle session creation
+            res.cookie('user_id', user.id);
+            return res.redirect('/users/profile');
+        }
+        else
+        {
+            return res.redirect('back');
+        }
     })
     .catch((err)=>
     {
-        console.log(`error in finding user ${err}`);
+        console.log(`error in finding user in signing ${err}`);
+        return res.redirect('back');
     });
 }
 
 // for sighup (registering the user in the database)
 module.exports.createUser = function(req, res)
 {
-    if(req.body.password === req.body.confirmPassword)
+    if(req.body.password != req.body.confirmPassword)
     {
-        User.create({
-            email:req.body.email,
-            password: req.body.password,
-            name: req.body.name 
-        })
-        .then((newUser)=>
-        {
-            return res.render('home',{
-                title: "Home"
-            });
-        })
-        .catch((err)=>
-        {
-            console.log(`error in creating user ${err}`);
+        return res.redirect('back');
+    }
+    
+    User.findOne({email:req.body.email}, function(err, user)
+    {
+        if(err){
+            console.log("error in finding user in signingup");
             return;
-        });
-    }
-    else
-    {
-        console.log(`password should match ${password} and ${confirmPassword}`);
-    }
+        }
+
+        if(!user)
+        {
+            User.create(req.body)
+            .then(()=>
+            {
+                return res.redirect('/users/signIn');
+            })
+            .catch((err)=>
+            {
+                console.log(`error in creating user while signing up ${err}`);
+                return;
+            });
+        }
+        else
+        {
+            return res.redirect('back');
+        }
+    });
 }
