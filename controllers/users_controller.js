@@ -75,9 +75,14 @@ module.exports.createUser = function(req, res)
 }
 
 // logOut
-
-module.exports.logOut = function(req, res)
+module.exports.destroySession = function(req, res)
 {
-    res.clearCookie('user_id');
-    return res.redirect('/users/signIn');
+    req.logout(function(err)
+    {
+        if(err)
+        {
+            console.log(`error in logout function ${err}`);
+        }
+    });
+    return res.redirect('/');
 }
