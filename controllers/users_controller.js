@@ -12,7 +12,7 @@ module.exports.signIn = function(req, res)
     // checking if user already signed in
     if(req.isAuthenticated())
     {
-        return res.redirect('/users/profile');
+        return res.redirect('/');
     }
 
     return res.render('sign_in',{
@@ -25,7 +25,7 @@ module.exports.signUp=function(req, res)
     // checking if user already signed in
     if(req.isAuthenticated())
     {
-        return res.redirect('/users/profile');
+        return res.redirect('/');
     }
 
     return res.render('sign_up', {
@@ -36,7 +36,7 @@ module.exports.signUp=function(req, res)
 // sign in and create session for user
 module.exports.createSession = function(req, res)
 {
-    return res.redirect('/users/profile');
+    return res.redirect('/');
 }
 
 // for sighup (registering the user in the database)
@@ -47,19 +47,15 @@ module.exports.createUser = function(req, res)
         return res.redirect('back');
     }
     
-    User.findOne({email:req.body.email}, function(err, user)
+    User.findOne({email:req.body.email})
+    .then((user)=>
     {
-        if(err){
-            console.log("error in finding user in signingup");
-            return;
-        }
-
         if(!user)
         {
             User.create(req.body)
             .then(()=>
             {
-                return res.redirect('/users/signIn');
+                return res.redirect('/');
             })
             .catch((err)=>
             {
@@ -70,6 +66,14 @@ module.exports.createUser = function(req, res)
         else
         {
             return res.redirect('back');
+        }
+    })
+    .catch((err)=>
+    {
+        if(err)
+        {
+            console.log("error in finding user in signingup");
+            return;
         }
     });
 }
