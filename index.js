@@ -43,6 +43,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(passport.setAuthenticatedUser);
+
 // this is for routes, it will automatically fetches the index.js in routes folder
 app.use('/', require('./routes'));
 

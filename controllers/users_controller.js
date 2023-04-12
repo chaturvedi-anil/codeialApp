@@ -2,34 +2,19 @@ const User = require('../models/user');
 
 module.exports.userProfile = function(req, res)
 {
-    if(req.cookies.user_id)
-    {
-        User.findById(req.cookies.user_id)
-        .then((user)=>
-        {
-            if(user)
-            {
-                return res.render('user_profile',{
-                    title: "User Profile",
-                    user:user
-                });
-            }
-            return res.redirect('/users/signIn');
-        })
-        .catch((err) =>
-        {
-            console.log(`error in finding user in database ${err}`);
-            return res.redirect('/users/signIn');
-        });
-    }
-    else
-    {
-        return res.redirect('/users/signIn');
-    }
+    return res.render('user_profile',{
+        title: "User Profile"
+    });
 }
 
 module.exports.signIn = function(req, res)
 {
+    // checking if user already signed in
+    if(req.isAuthenticated())
+    {
+        return res.redirect('/users/profile');
+    }
+
     return res.render('sign_in',{
         title: "Sign In"
     });
@@ -37,6 +22,12 @@ module.exports.signIn = function(req, res)
 
 module.exports.signUp=function(req, res)
 {
+    // checking if user already signed in
+    if(req.isAuthenticated())
+    {
+        return res.redirect('/users/profile');
+    }
+
     return res.render('sign_up', {
         title : "Sign Up Page"
     });
@@ -45,7 +36,7 @@ module.exports.signUp=function(req, res)
 // sign in and create session for user
 module.exports.createSession = function(req, res)
 {
-    return res.redirect('/');
+    return res.redirect('/users/profile');
 }
 
 // for sighup (registering the user in the database)
