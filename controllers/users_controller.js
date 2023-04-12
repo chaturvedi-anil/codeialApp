@@ -42,33 +42,10 @@ module.exports.signUp=function(req, res)
     });
 }
 
-// for signing the user
+// sign in and create session for user
 module.exports.createSession = function(req, res)
 {
-    User.findOne({email:req.body.email})
-    .then((user) =>
-    {
-        if(user)
-        {   
-            if(user.password != req.body.password)
-            {
-                return res.redirect('back');
-            }
-            
-            // handle session creation
-            res.cookie('user_id', user.id);
-            return res.redirect('/users/profile');
-        }
-        else
-        {
-            return res.redirect('back');
-        }
-    })
-    .catch((err)=>
-    {
-        console.log(`error in finding user in signing ${err}`);
-        return res.redirect('back');
-    });
+    return res.redirect('/');
 }
 
 // for sighup (registering the user in the database)
