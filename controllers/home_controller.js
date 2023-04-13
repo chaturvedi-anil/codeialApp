@@ -4,7 +4,16 @@ const Comment = require('../models/comment');
 module.exports.home = function(req,res)
 {
     // populate the user of each post 
-    Post.find({}).populate('user').exec()
+    Post.find({})
+    .populate('user')
+    .populate(
+    {
+        path: 'comments',
+        populate: {
+            path: 'user'           
+        }
+    })
+    .exec()
     .then((post)=>
     {
         return res.render('home', {

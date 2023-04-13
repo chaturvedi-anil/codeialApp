@@ -20,9 +20,6 @@
                     <li>
                         <%= post.content %> <br>
                         <small><%= post.user.name%></small>
-                        <p>
-                           <%= post.commetns %>
-                        </p>
                     </li>
                     
                     <div id="post-comment">
@@ -34,6 +31,22 @@
                                 <input type="submit" value="Add Comment">
                             </form>    
                         <% } %>
+                    </div>
+
+                    <div id="post-comments-list">
+                        <ul id="post-comment-<%= post._id %>">
+                            <% for(comment of post.comments) { %> 
+                                <li>
+                                    <p>
+                                        <%= comment.content %>
+                                        <br>
+                                        <small>
+                                            <%= comment.user.name %>
+                                        </small>
+                                    </p>    
+                                </li>
+                            <% } %>
+                        </ul>
                     </div>
                 </p>
             <%}%>
