@@ -18,6 +18,4 @@ module.exports.create = function(req, res)
     });
 }
 
-// display post in home 
-
 

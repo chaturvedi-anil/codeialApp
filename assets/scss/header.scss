@@ -6,19 +6,19 @@ header
     color: #fff;
     display: flex;
     justify-content: space-between;
-    height: 10%;
     div
     {
         font-weight: 700;
         font-size: 1.5rem;
         line-height: 0.1;
         display: inline;
-        margin: 0;
+        margin: 0 0.2rem;
         padding: 0 2px;
         ul
         {
             li
             {
+                margin: 0 0.2rem;
                 display: inline-block;
                 list-style: none;
                 a
