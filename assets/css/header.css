@@ -1,0 +1,24 @@
+header {
+  overflow: hidden;
+  background-color: royalblue;
+  padding: 0;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  height: 10%; }
+  header div {
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 0.1;
+    display: inline;
+    margin: 0;
+    padding: 0 2px; }
+    header div ul li {
+      display: inline-block;
+      list-style: none; }
+      header div ul li a {
+        color: white;
+        text-decoration: none; }
+      header div ul li a:hover {
+        text-decoration: underline;
+        cursor: pointer; }
