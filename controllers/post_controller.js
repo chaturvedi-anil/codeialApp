@@ -3,35 +3,33 @@ const Comment=require('../models/comment');
 
 module.exports.create = function(req, res)
 {
-    Post.create({
-        content: req.body.content,
-        user: req.user._id,
-    })
-    .then(()=>
+    try
     {
-        console.log('post added');
-        return res.redirect('back')
-    })
-    .catch((err)=>
-    {
-        console.log(`error in creating post`);
+        Post.create({
+            content: req.body.content,
+            user: req.user._id,
+        })
         return res.redirect('back');
-    });
+    }
+    catch(err)
+    {
+        console.log(`error in creating post ${err}`);
+        return res.redirect('back');
+    }
 }
 
 
 // deleting post
 
-module.exports.destroy= function(req, res)
+module.exports.destroy= async function(req, res)
 {
-    Post.findById(req.params.id)
-    .then((post) =>
+    try
     {
+        let post = await Post.findById(req.params.id);
         // .id means converting the objectId into string
         if(post.user == req.user.id)
         {
             post.deleteOne(post._id);
-            console.log('done');
             // delete all the comments associated to that post
             Comment.deleteMany({post: req.params.id})
             .then(()=>
@@ -50,11 +48,11 @@ module.exports.destroy= function(req, res)
             console.log(`unautherised user trying to delete post`);
             return res.redirect('back');
         }
-    })
-    .catch((err)=>
+    }
+    catch(err)
     {
-        console.log(`error in finding the post in db ${err}`);
+        console.log(`error in deleting the post from the db ${err}`);
         return res.redirect('back');
-    });
+    };
 }
 

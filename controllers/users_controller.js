@@ -1,42 +1,42 @@
 const User = require('../models/user');
 
-module.exports.profile = function(req, res)
+module.exports.profile = async function(req, res)
 {
-    User.findById(req.params.id)
-    .then((user)=>
+    try
     {
+        let user= await User.findById(req.params.id);
+
         return res.render('user_profile',{
             title: "User Profile",
             profile_user: user
         });
-    })
-    .catch((err)=>
+    }
+    catch(err)
     {
         console.log(`error in showing user profile page ${err}`);
         return res.redirect('back');
-    });
+    }
 }
 
 // update
-module.exports.update=function(req, res)
+module.exports.update= async function(req, res)
 {
-    if(req.user.id == req.params.id)
+    try
     {
-        User.findByIdAndUpdate(req.params.id, req.body)
-        .then(()=>
+        if(req.user.id == req.params.id)
         {
-            console.log('updated');
+            await User.findByIdAndUpdate(req.params.id, req.body);
             return res.redirect('/');
-        })
-        .catch((err)=>
+        }
+        else
         {
-            console.log(`error in findind the user and updating the details ${err}`);
-            return res.redirect('back');
-        });
+            return res.status(401).send('Unautherized');
+        }
     }
-    else
+    catch(err)
     {
-        return res.status(401).send('Unautherized');
+        console.log(`Error in updating user details ${err}`);
+        return res.redirect('back');
     }
 }
 
@@ -74,42 +74,27 @@ module.exports.createSession = function(req, res)
 }
 
 // for sighup (registering the user in the database)
-module.exports.createUser = function(req, res)
+module.exports.createUser = async function(req, res)
 {
-    if(req.body.password != req.body.confirmPassword)
+    try
     {
-        return res.redirect('back');
-    }
-    
-    User.findOne({email:req.body.email})
-    .then((user)=>
-    {
-        if(!user)
-        {
-            User.create(req.body)
-            .then(()=>
-            {
-                return res.redirect('/');
-            })
-            .catch((err)=>
-            {
-                console.log(`error in creating user while signing up ${err}`);
-                return;
-            });
-        }
-        else
+        if(req.body.password != req.body.confirmPassword)
         {
             return res.redirect('back');
         }
-    })
-    .catch((err)=>
-    {
-        if(err)
+        
+        let user= await User.findOne({email:req.body.email});
+        if(!user)
         {
-            console.log("error in finding user in signingup");
-            return;
+            await User.create(req.body);
+            return res.redirect('/');
         }
-    });
+    }
+    catch(err)
+    {
+        console.log(`error in finding user in signingup ${err}`);
+        return res.redirect('back');
+    }
 }
 
 // logOut
