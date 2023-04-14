@@ -35,3 +35,37 @@ module.exports.create= function(req, res)
     });
     
 }
+
+// deleting comment
+module.exports.destroy=function(req, res)
+{
+    Comment.findById(req.params.id)
+    .then((comment)=>
+    {
+        if(comment.user == req.user.id)
+        {
+            let postId=comment.post;
+        
+            //deleting comments from comment schema
+            comment.deleteOne(comment._id);
+
+            // pull function will delete the comment id form comments array of postSchema
+            Post.findByIdAndUpdate(postId,{$pull: { comments: req.params.id}})
+            .then(()=>
+            {
+                return res.redirect('back');
+            })
+            .catch((err)=>
+            {
+                console.log(`error in deleting comment id from post schema comments array ${err}`);
+                return res.redirect('back');
+            });
+
+        }
+    })
+    .catch((err)=>
+    {
+        console.log(`error in finding comments in Comment Schema ${err}`);
+        return res.redirect('back');
+    });
+}
