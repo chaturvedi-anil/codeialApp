@@ -67,11 +67,6 @@ module.exports.signUp=function(req, res)
     });
 }
 
-// sign in and create session for user
-module.exports.createSession = function(req, res)
-{
-    return res.redirect('/');
-}
 
 // for sighup (registering the user in the database)
 module.exports.createUser = async function(req, res)
@@ -97,6 +92,14 @@ module.exports.createUser = async function(req, res)
     }
 }
 
+// sign in and create session for user
+module.exports.createSession = function(req, res)
+{
+    // first is state, 2nd is messaged to be displayed
+    req.flash('success', 'Logged in Successfully');
+    return res.redirect('/');
+}
+
 // logOut
 module.exports.destroySession = function(req, res)
 {
@@ -107,5 +110,9 @@ module.exports.destroySession = function(req, res)
             console.log(`error in logout function ${err}`);
         }
     });
+
+    req.flash('success', 'You have logged out!')
     return res.redirect('/');
+
+
 }

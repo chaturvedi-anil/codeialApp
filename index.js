@@ -11,6 +11,8 @@ const passport=require('passport');
 const passportLocal=require('./config/passport-local-strategy');
 const MongoDBStore=require('connect-mongodb-session')(session);
 const sassMiddleware =require('node-sass-middleware');
+const flash = require('connect-flash');
+const customMware = require('./config/middleware');
 
 // sass middleware
 app.use(sassMiddleware({
@@ -69,6 +71,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+
+// flash messages
+app.use(flash());
+//response for flash
+app.use(customMware.setFlash);
 
 // this is for routes, it will automatically fetches the index.js in routes folder
 app.use('/', require('./routes'));
