@@ -18,6 +18,7 @@ module.exports.create = async function(req, res)
         await post.comments.push(comment);
         post.save();
 
+        req.flash('success', 'comment add');
         return res.redirect('/');
     }
     catch(err)
@@ -43,11 +44,14 @@ module.exports.destroy= async function(req, res)
 
             // pull function will delete the comment id form comments array of postSchema
             await Post.findByIdAndUpdate(postId,{$pull: { comments: req.params.id}});
+
+            req.flash('success', 'comment delete');
             
             return res.redirect('back');
         }
         else
         {
+            req.flash('error', 'you can not delete this comment');
             return res.status(401).send('Unautherized');
         }
     

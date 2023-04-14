@@ -26,6 +26,9 @@ module.exports.update= async function(req, res)
         if(req.user.id == req.params.id)
         {
             await User.findByIdAndUpdate(req.params.id, req.body);
+            
+            req.flash('success', 'User details updated');
+            
             return res.redirect('/');
         }
         else
@@ -75,6 +78,7 @@ module.exports.createUser = async function(req, res)
     {
         if(req.body.password != req.body.confirmPassword)
         {
+            req.flash('error', 'password and confirm password should be same');
             return res.redirect('back');
         }
         
@@ -82,6 +86,8 @@ module.exports.createUser = async function(req, res)
         if(!user)
         {
             await User.create(req.body);
+            req.flash('success', 'Successfully sign up');
+
             return res.redirect('/');
         }
     }
@@ -111,8 +117,7 @@ module.exports.destroySession = function(req, res)
         }
     });
 
-    req.flash('success', 'You have logged out!')
+    req.flash('success', 'You have logged out!');
     return res.redirect('/');
-
 
 }
