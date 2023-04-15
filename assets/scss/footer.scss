@@ -1,8 +1,22 @@
-footer
+#layout-footer
 {
-    display: flex;
-    background-color: gray;
     color: white;
-    font-size: 1.5rem;
+    a
+    {
+        color: white;
+        text-decoration: none;
+    }
 
+    background: grey;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: flex-start;
+
+    .footer-nav
+    {
+        ul
+        {
+            list-style: none;
+        }
+    }
 }
