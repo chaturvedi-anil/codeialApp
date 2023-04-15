@@ -1,21 +1,32 @@
 const Post=require('../models/post');
 const Comment=require('../models/comment');
 
-module.exports.create = function(req, res)
+module.exports.create = async function(req, res)
 {
     try
     {
-        Post.create({
+        let post =await Post.create({
             content: req.body.content,
             user: req.user._id,
-        })
-        req.flash('success', 'post published');
+        });
 
+        // checking if req is xhr (xmlHttpRequest)
+        if(req.xhr)
+        {
+            return res.status(200).json({
+                data:{
+                    post: post
+                },
+                message: 'post create!'
+            });
+        }
+
+        req.flash('success', 'post published');
         return res.redirect('back');
     }
     catch(err)
     {
-        console.log(`error in creating post ${err}`);
+        req.flash('error', err);
         return res.redirect('back');
     }
 }
@@ -33,27 +44,31 @@ module.exports.destroy= async function(req, res)
         {
             post.deleteOne(post._id);
             // delete all the comments associated to that post
-            Comment.deleteMany({post: req.params.id})
-            .then(()=>
+            await Comment.deleteMany({post: req.params.id});
+
+            // ajax response
+            if(req.xhr)
             {
-                req.flash('success', 'post and associate comment delete');
-                return res.redirect('back');
-            })
-            .catch((err)=>
-            {
-                console.log(`error in deleting the comments ${err}`);
-                return res.redirect('back');
-            });
+                return res.status(200).json({
+                    data:{
+                        post_id: req.params.id
+                    },
+                    message: 'post deleted!'
+                });
+            }
+
+            req.flash('success', 'post and associate comment delete');
+            return res.redirect('back');
         }
         else
         {
-            console.log(`unautherised user trying to delete post`);
+            req.flash('error', 'You can not delete this post !');
             return res.redirect('back');
         }
     }
     catch(err)
     {
-        console.log(`error in deleting the post from the db ${err}`);
+        req.flash('error', err);
         return res.redirect('back');
     };
 }
