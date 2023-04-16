@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/css/user_profile.css">
-<h1>Codieal / User Profile page </h1>
 
 <div>
+    <img src="<%= user.avatar %>" alt="picture" height="200">
     <% if(user.id == profile_user.id) {%>
         
         <form action="/users/update/<%= profile_user.id %>" method="post" enctype="multipart/form-data">
