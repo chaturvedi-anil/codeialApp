@@ -21,25 +21,42 @@ module.exports.profile = async function(req, res)
 // update
 module.exports.update= async function(req, res)
 {
-    try
+    if(req.user.id == req.params.id)
     {
-        if(req.user.id == req.params.id)
+        try
         {
-            await User.findByIdAndUpdate(req.params.id, req.body);
-            
-            req.flash('success', 'User details updated');
-            
-            return res.redirect('/');
+            let user = await User.findById(req.params.id);
+            // this will parse multipart req using multer
+            User.uploadedAvatar(req, res, function(err)
+            {
+                if(err){console.log("******multer error", err);}
+
+                user.name= req.body.name;
+                user.email= req.body.email;
+
+                if(req.file)
+                {
+                    // this is the saving the path of uploaded file into the avatar field in the user
+                    user.avatar = User.avatarPath+ '/' + req.file.filename;
+                }
+
+                //this will save the updated details in db 
+                user.save();
+
+                req.flash('success', 'User details updated');    
+                return res.redirect('/');
+            });
         }
-        else
+        catch(err)
         {
-            return res.status(401).send('Unautherized');
+            req.flash('error', err);
+            return res.redirect('back');
         }
     }
-    catch(err)
+    else
     {
-        console.log(`Error in updating user details ${err}`);
-        return res.redirect('back');
+        req.flash('error', 'Unautherized');
+        return res.status(401).send('Unautherized');
     }
 }
 
