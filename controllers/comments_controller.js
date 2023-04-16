@@ -55,6 +55,16 @@ module.exports.destroy= async function(req, res)
             // pull function will delete the comment id form comments array of postSchema
             await Post.findByIdAndUpdate(postId,{$pull: { comments: req.params.id}});
 
+            if(res.xhr)
+            {
+                return res.status(200).json({
+                    data:{
+                        comment_id: req.params.id
+                    },
+                    message: 'Comment deleted!'
+                });
+            }
+            
             req.flash('success', 'comment delete');
             
             return res.redirect('back');

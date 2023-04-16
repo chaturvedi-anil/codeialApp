@@ -18,6 +18,7 @@
                 {
                     let newComment = newCommentDom(data.data.comment);
                     $(`#post-commnets-container>ul`, newComment).prepend();
+                    deleteComment($(` .delete-comment-button`, newComment));
                 },
                 error: function(error)
                 {
@@ -46,5 +47,26 @@
         `);
     }
 
+    // method to delete comment from dom 
+    let deleteComment = function(deleteLink)
+    {
+        $(deleteLink).click(function(e)
+        {
+            e.preventDefault();
+            
+            $.ajax({
+                type: 'get',
+                url: $(deleteLink).prop('href'),
+                success: function(data)
+                {
+                    $(`#comment-${data.data.comment._id}`).remove();
+                },
+                error: function(err)
+                {
+                    console.log(error.responseText);
+                }
+            });
+        });
+    }
     createComment();
 }
