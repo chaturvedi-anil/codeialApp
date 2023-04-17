@@ -9,7 +9,7 @@ module.exports.index = async function(req, res)
     .populate({
         path: 'user',
         // select all field except password
-        select: '-password'
+        // select: '-password'
     })
     .populate(
     {
@@ -32,13 +32,23 @@ module.exports.destroy= async function(req, res)
     try
     {
         let post = await Post.findById(req.params.id);
-        post.deleteOne(post._id, {projection: { password: 0 }});
-        // delete all the comments associated to that post
-        await Comment.deleteMany({post: req.params.id});
-        return res.json(200,
-            {
-            message:'post and associate comment delete'
-        });
+        
+        if(post.user == req.user.id)
+        {
+            post.deleteOne(post._id, {projection: { password: 0 }});
+            // delete all the comments associated to that post
+            await Comment.deleteMany({post: req.params.id});
+            return res.json(200,
+                {
+                message:'post and associate comment delete'
+            });
+        }
+        else
+        {
+            return res.json(401,{
+                message:'you can not delete this post !'
+            });
+        }
     }
     catch(err)
     {
