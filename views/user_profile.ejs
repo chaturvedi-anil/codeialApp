@@ -2,6 +2,9 @@
 
 <div>
     <img src="<%= user.avatar %>" alt="picture" height="200">
+    <button>
+        <a href="/users/delete-profile/<%= profile_user.id %>">delete profile</a>
+    </button>
     <% if(user.id == profile_user.id) {%>
         
         <form action="/users/update/<%= profile_user.id %>" method="post" enctype="multipart/form-data">
