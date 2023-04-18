@@ -14,16 +14,10 @@ passport.use(new googleStrategy(
     function(accessToken, refreshToken, profile, done)
     {
         // find a user
-        User.findOne({email: profile.emails[0].value}).exec(function(err, user)
+        User.findOne({email: profile.emails[0].value})
+        .then((user)=>
         {
-            if(err)
-            {
-                console.log('error in google strategy-passpoort', err);
-                return;
-            }
-
-            console.log(profile);
-
+            // console.log(profile);
             if(user)
             {
                 // if found, set this as req.user
@@ -47,6 +41,11 @@ passport.use(new googleStrategy(
                     return;
                 });
             }
+        })
+        .catch((err)=>
+        {
+            console.log('error in google strategy-passpoort', err);
+            return;
         });
     })
 );
