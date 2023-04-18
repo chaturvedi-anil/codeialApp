@@ -11,14 +11,9 @@ let opts = {
 
 passport.use(new JWTStrategy(opts, function(jwtPayLoad, done)
 {
-    User.findById(jwtPayLoad._id, function(err, user)
+    User.findById(jwtPayLoad._id)
+    .then((user)=>
     {
-        if(err)
-        {
-            console.log('error in finding user from jwt');
-            return;
-        }
-
         if(user)
         {
             return done(null, user);
@@ -27,7 +22,13 @@ passport.use(new JWTStrategy(opts, function(jwtPayLoad, done)
         {
             return done(null, false);
         }
-    });
+    })
+    .catch((err)=>
+    {
+        console.log('error in finding user from jwt');
+        return;
+    })
+
 }));
 
 module.exports = passport;
