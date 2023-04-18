@@ -9,8 +9,8 @@ let transhporter= nodemailer.createTransport({
     secure: false,
     auth:
     {
-        user: 'alchemy.cn18',
-        pass: 'codingninjas'
+        user: 'warriorcoder23@gmail.com',
+        pass: 'Warrior23@'
     }
 });
 
