@@ -9,35 +9,39 @@ module.exports.create = async function(req, res)
         // finding post to do comments on it 
         let post = await Post.findById(req.body.post)
         
-        let comment = await Comment.create({
-            content: req.body.content,
-            user: req.user._id,
-            post: req.body.post
-        });
-        
-        // adding comment object_id in comments array
-        await post.comments.push(comment);
-        post.save();
-
-        comment = await comment.populate('user', 'name email');
-        commentMailer.newComment(comment); 
-        if(req.xhr)
+        if(post)
         {
-            return res.status(200).json({
-                data:{
-                    comment:comment
-                },
-                message: 'comment added !'
+            let comment = await Comment.create({
+                content: req.body.content,
+                user: req.user._id,
+                post: req.body.post
             });
+            
+            // adding comment object_id in comments array
+            post.comments.push(comment);
+            post.save();
+    
+            // comment = await comment.populate('user');
+            comment = await comment.populate('user', 'name email');
+            commentMailer.newComment(comment); 
+            if(req.xhr)
+            {
+                return res.status(200).json({
+                    data:{
+                        comment:comment
+                    },
+                    message: 'comment added !'
+                });
+            }
         }
 
-        req.flash('success', 'comment add');
+        req.flash('success', 'comment published');
         return res.redirect('/');
     }
     catch(err)
     {
-        console.log(`Error in creating comment ${err}`);
-        return res.redirect('back');
+        req.flash('error', err);
+        return;
     }
 }
 

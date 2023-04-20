@@ -1,17 +1,18 @@
+require('dotenv').config();
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const path = require('path');
 
-let transhporter= nodemailer.createTransport({
+let transporter= nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
     port: 587,
     secure: false,
     auth:
     {
-        user: 'warriorcoder23@gmail.com',
-        pass: 'Warrior23@'
-    }
+        user: "codingwa90",
+        pass: process.env.PASSWORD
+    },
 });
 
 
@@ -32,6 +33,6 @@ let renderTemplate = (data, relativePath)=>{
 }
 
 module.exports = {
-    transhporter:transhporter,
+    transporter:transporter,
     renderTemplate:renderTemplate
 }
