@@ -10,7 +10,7 @@ let transporter= nodemailer.createTransport({
     secure: false,
     auth:
     {
-        user: "codingwa90",
+        user: process.env.USER,
         pass: process.env.PASSWORD
     },
 });
