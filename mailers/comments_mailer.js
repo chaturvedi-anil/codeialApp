@@ -5,12 +5,15 @@ const nodeMailer = require('../config/nodemailer');
 exports.newComment = (comment)=>
 {
     // console.log('inside newCommnet mailer');
+
+    let htmlString = nodeMailer.renderTemplate({comment: comment}, '/comments/new_comment.ejs');
+
     nodeMailer.transporter.sendMail(
     {
         from: process.env.USER,
         to: comment.user.email,
         subject: 'New Comment Published',
-        html: '<h1> Your comment is now published ! </h1>'
+        html: htmlString
     }, (err, info)=>
         {
             if(err)
@@ -19,7 +22,7 @@ exports.newComment = (comment)=>
                 return;
             }
 
-            console.log('message sent ', info);
+            // console.log('message sent ');
             return;
         }
     );
