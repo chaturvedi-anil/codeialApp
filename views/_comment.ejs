@@ -6,10 +6,18 @@
             </small>
         <% } %>
         
-        <%= comment.content %>
-        <br>
-        <small>
-            <%= comment.user.name %>
-        </small>
+        
+        <div>
+            <div>
+                <%= comment.content %>
+                <br>
+                <small>
+                    <%= comment.user.name %>
+                </small>
+            </div>
+            <button href="" style="background:transparent;">
+                <i class="fas fa-regular fa-heart"></i>
+            </button>
+        </div>
     </p>    
 </li>

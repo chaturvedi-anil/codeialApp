@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <li id="post-<%= post._id %>">
     <p>
         <% if((locals.user) && (locals.user.id == post.user.id)) {%>
@@ -5,8 +6,15 @@
                 <a class="delete-post-button" href="/posts/destroy/<%= post._id %>"> X </a>
             </small>
         <% } %>
-        <%= post.content %> <br>
-        <small><%= post.user.name %></small>
+        <div>
+            <div>
+                <%= post.content %> <br>
+                <small><%= post.user.name %></small>
+            </div>
+            <button href="" onclick="">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
     </p>
     <div id="post-comment">
         <!-- for comments -->
