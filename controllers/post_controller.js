@@ -1,5 +1,6 @@
 const Post=require('../models/post');
 const Comment=require('../models/comment');
+const Like = require('../models/like');
 
 module.exports.create = async function(req, res)
 {
@@ -42,6 +43,11 @@ module.exports.destroy= async function(req, res)
         // .id means converting the objectId into string
         if(post.user == req.user.id)
         {
+            // CHANE :: delete all associate like and all its comments likes too
+            await Like.deleteMany({likable: post, onModel: 'Post'});
+            await Like.deleteMany({_id:{$in: post.comments}});
+
+
             post.deleteOne(post._id);
             // delete all the comments associated to that post
             await Comment.deleteMany({post: req.params.id});

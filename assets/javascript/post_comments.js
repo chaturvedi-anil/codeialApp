@@ -42,6 +42,12 @@
                     <small>
                         ${comment.user.name}
                     </small>
+                    <br>
+                    <small>
+                        <a class="toggle-like-btn" data-likes="0" href="/likes/toggle/?id=comment._id%>&type=Comment">
+                            0 Likes
+                        </a>
+                    </small>
                 </p>    
             </li>
         `);

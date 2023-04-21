@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="/css/comments.css">
 <li id="comment-<%=comment._id%>">
     <p>
         <% if((locals.user) && (locals.user.id == comment.user.id)) {%>
@@ -6,18 +8,23 @@
             </small>
         <% } %>
         
-        
-        <div>
-            <div>
-                <%= comment.content %>
-                <br>
-                <small>
-                    <%= comment.user.name %>
-                </small>
-            </div>
-            <button href="" style="background:transparent;">
-                <i class="fas fa-regular fa-heart"></i>
-            </button>
-        </div>
+        <%= comment.content %>
+        <br>
+        <small>
+            <%= comment.user.name %>
+        </small>
+        <br>
+
+        <!-- CHANGE :: display the likes of this comment, then show the link toggle likes, else, just show the count -->
+        <!-- TODO study the data attribute -->
+        <small>
+            <%if(locals.user){ %>
+                <a class="toggle-like-btn" data-likes="<%=comment.likes.length %>" href="/likes/toggle/?id=comment._id%>&type=Comment">
+                    <%= comment.likes.length %> Likes
+                </a>
+            <% }else{ %>
+                <%= comment.likes.length %> Likes
+            <% }%>
+        </small>
     </p>    
 </li>

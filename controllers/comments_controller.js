@@ -3,6 +3,7 @@ const Post = require('../models/post');
 const commentMailer = require('../mailers/comments_mailer');
 const queue=require('../config/kue');
 const commentEmailWorker = require('../workers/comment_email_worker');
+const Like = require('../models/like');
 
 module.exports.create = async function(req, res)
 {
@@ -74,6 +75,10 @@ module.exports.destroy= async function(req, res)
             // pull function will delete the comment id form comments array of postSchema
             await Post.findByIdAndUpdate(postId,{$pull: { comments: req.params.id}});
 
+            // CHANE :: deleting the associate like for the comment 
+            await Like.deleteMany({likable: comment._id, onModel:'Comment'});
+
+            // sent the comment id which was delete back to the views
             if(res.xhr)
             {
                 return res.status(200).json({

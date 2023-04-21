@@ -11,8 +11,6 @@
                 <input type="submit" value="Post">
             </form>
         <% } %>
-    
-        <h4>Posts</h4>
         <div id="posts-list-container">
             <ul>
                 <% for(post of posts) {%> 
@@ -37,3 +35,12 @@
 </div>
 
 <script src="/javascript/home_posts.js"></script>
+
+<!-- CHANGE :: import the script file for toggle likes -->
+<script src="/javascript/toggle_likes.js"></script>
+<script>
+    $('.toggle-like-btn').each(function(){
+        let self = this;
+        let toggleLike = new ToggleLike(self);
+    });
+</script>
