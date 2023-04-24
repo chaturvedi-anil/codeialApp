@@ -9,11 +9,12 @@ class ToggleLike
 
     toggleLike()
     {
+        console.log('inside togglerlike');
         $(this.toggler).click(function(e)
         {
             e.preventDefault();
             let self = this;
-
+            console.log('inside toggler click');
             // this is a new way of writing ajax , its look like same as promises
             $.ajax({
                 type:'POST',
@@ -21,6 +22,7 @@ class ToggleLike
             })
             .done(function(data)
             {
+                console.log('inside done');
                 let likesCount = parseInt($(self).attr('data-likes'));
                 console.log(likesCount);
 

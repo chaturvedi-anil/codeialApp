@@ -2,6 +2,7 @@ const Post = require('../models/post');
 const Comment = require('../models/comment');
 const Like = require('../models/like');
 
+
 module.exports.toggleLike = async function(req, res)
 {
     try
@@ -9,39 +10,42 @@ module.exports.toggleLike = async function(req, res)
         // likes/toggle/?=....&type=Post
         let likeable;
         let deleted = false;
-
+        
         if(req.query.type == 'Post')
         {
             likeable = await Post.findById(req.query.id).populate('likes');
+            // console.log('post like ', likeable);
         }
         else
         {
             likeable = await Comment.findById(req.query.id).populate('likes');
+            // console.log('commnet like ', likeable);
         }
 
         // check if like already exist
         let existingLike = await Like.findOne({
-            likebale: req.query.id,
+            likeable: req.query.id,
             onModel: req.query.type,
             user: req.user._id
         });
 
-        // if liek already exist then delete it 
+        // if like already exist then delete it 
         if(existingLike)
         {
+            // console.log('existing like ');
             likeable.likes.pull(existingLike._id);
             likeable.save();
 
-            existingLike.remove();
+            existingLike.deleteOne(existingLike._id);
             deleted=true;
         }
         else
         {
             //else make it like 
-
+            // console.log('new like ');
             let newLike = await Like.create({
                 user: req.user._id,
-                likeable: req.query._id,
+                likeable: req.query.id,
                 onModel: req.query.type
             });
 
@@ -49,12 +53,12 @@ module.exports.toggleLike = async function(req, res)
             likeable.save();
         }
 
-        return req.json(200, {
+        return res.json(200, {
             message:'Request Successfull',
             data:{
                 deleted: deleted
             }
-        })
+        });
     }
     catch(err)
     {

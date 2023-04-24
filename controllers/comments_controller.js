@@ -25,7 +25,7 @@ module.exports.create = async function(req, res)
             post.save();
     
             // comment = await comment.populate('user');
-            comment = await comment.populate('user', 'name email');
+            comment = await comment.populate('user', 'name email').execPopulate();
             // commentMailer.newComment(comment); 
 
             let job=queue.create('emails', comment).save(function(err)
@@ -43,7 +43,7 @@ module.exports.create = async function(req, res)
                     data:{
                         comment:comment
                     },
-                    message: 'comment added !'
+                    message: 'comment created !'
                 });
             }
         }
@@ -75,7 +75,7 @@ module.exports.destroy= async function(req, res)
             // pull function will delete the comment id form comments array of postSchema
             await Post.findByIdAndUpdate(postId,{$pull: { comments: req.params.id}});
 
-            // CHANE :: deleting the associate like for the comment 
+            // CHANGE :: deleting the associate like for the comment 
             await Like.deleteMany({likable: comment._id, onModel:'Comment'});
 
             // sent the comment id which was delete back to the views
@@ -102,6 +102,7 @@ module.exports.destroy= async function(req, res)
     }
     catch(err)
     {
+        req.flash('error', err);
         console.log(`Error in deleting comment ${err}`);
         return res.redirect('back');
     }

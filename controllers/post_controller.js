@@ -14,11 +14,15 @@ module.exports.create = async function(req, res)
         // checking if req is xhr (xmlHttpRequest)
         if(req.xhr)
         {
-            return res.status(200).json({
+            // if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
+            post = await post.populate('user', 'name').execPopulate();
+            
+            return res.status(200).json(
+            {
                 data:{
                     post: post
                 },
-                message: 'post create!'
+                message: 'post created!'
             });
         }
 
@@ -28,6 +32,10 @@ module.exports.create = async function(req, res)
     catch(err)
     {
         req.flash('error', err);
+
+        // added this to view the error on console as well
+        console.log(err);
+        
         return res.redirect('back');
     }
 }

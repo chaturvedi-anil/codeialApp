@@ -5,6 +5,7 @@ module.exports.home = async function(req,res)
 {
     try
     {
+        // CHANGE :: populate the likes of each post and comment
         // populate the user of each post 
         let post= await Post.find({})
         .sort('-createdAt')
@@ -21,6 +22,7 @@ module.exports.home = async function(req,res)
                 path: 'likes'
             }
         })
+        .populate('comments')
         .populate('likes');
         
         let users= await User.find({});
