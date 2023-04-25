@@ -1,21 +1,10 @@
-require('dotenv').config();
+// require('dotenv').config();
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const path = require('path');
+const env= require('./enviorment');
 
-let transporter= nodemailer.createTransport(
-{
-    service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth:
-    {
-        user: process.env.USER,
-        pass: process.env.PASSWORD
-    },
-});
-
+let transporter= nodemailer.createTransport(env.smtp);
 
 let renderTemplate = (data, relativePath)=>{
     let mailHTML;
