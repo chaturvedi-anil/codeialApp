@@ -50,18 +50,18 @@
         height: 24%;
         width: 100%;
         display: flex;
-
+        
         #chat-message-input
         {
             height: 50%;
             width: 70%;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
         #send-message
         {
             height: 50%;
             width: 30%;
-            font-size: 25px;
+            font-size: 1rem;
             color: white;
             border: none;
             background: rgb(55, 224, 55);

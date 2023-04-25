@@ -1,13 +1,10 @@
-const { Socket } = require('socket.io');
-
 module.exports.chatSocket = function(socketServer) 
 {
     // 
     let io = require('socket.io')(socketServer, {cors:{origin:"*"}});
 
-    console.log('chat socket');
-
-    io.on('connection', function(socket) {
+    io.on('connection', function(socket) 
+    {
         console.log('new connection received', socket.id);
         
         // on diconnect
@@ -26,6 +23,13 @@ module.exports.chatSocket = function(socketServer)
 
             // sending notification to all the user that new user join the chat room  
             io.in(data.chatroom).emit('user_joined', data);
+        });
+
+
+        // CHANGE :: detect send_message and brodcast to everyone in the chatroom
+        socket.on('send_message', function(data)
+        {
+            io.in(data.chatroom).emit('receive_message', data);
         });
     });
 };
