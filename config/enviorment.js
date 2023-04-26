@@ -1,3 +1,18 @@
+const fs=require('fs');
+const rfs=require('rotating-file-stream');
+const path=require('path');
+
+const logDirectory = path.join(__dirname, '../production_logs');
+if (!fs.existsSync(logDirectory)) 
+{
+    fs.mkdirSync(logDirectory);
+}
+
+const accessLogStream = rfs.createStream('access.log',{
+    interval:'1d',
+    path: logDirectory
+}); 
+
 require('dotenv').config();
 const development=
 {
@@ -22,7 +37,10 @@ const development=
     google_callback_url: process.env.CODEIAL_GOOGLE_CALLBACK_URL,
 
     jwt_secret: process.env.CODEIAL_JWT_SECRET,
-
+    morgan:{
+        mode: 'dev',
+        options: {stream: accessLogStream}
+    }
 }
 
 const production = {
@@ -47,6 +65,10 @@ const production = {
     google_callback_url: process.env.CODEIAL_GOOGLE_CALLBACK_URL,
 
     jwt_secret: process.env.CODEIAL_JWT_SECRET,
+    morgan:{
+        mode: 'combined',
+        options: {stream: accessLogStream}
+    }
 }
 
 

@@ -1,6 +1,8 @@
 const express= require('express');
-// 
+// enviorment variables
 const env= require('./config/enviorment');
+// for storing the log 
+const logger=require('morgan');
 const cookieParser = require('cookie-parser');
 const port = 8000;
 const app= express();
@@ -27,13 +29,16 @@ chatServer.listen(5000);
 console.log('chat server is listing on port 5000');
 const path = require('path');
 // sass middleware
-app.use(sassMiddleware({
-    src: path.join(__dirname, env.asset_path, '/scss'),
-    dest: path.join(__dirname, env.asset_path, '/css'),
-    debug: false,
-    outputStyle: 'extended',
-    prefix: '/css'
-})); 
+if(env.name == 'development')
+{
+    app.use(sassMiddleware({
+        src: path.join(__dirname, env.asset_path, '/scss'),
+        dest: path.join(__dirname, env.asset_path, '/css'),
+        debug: false,
+        outputStyle: 'extended',
+        prefix: '/css'
+    }));
+} 
 
 // setting body parser middileware
 app.use(express.urlencoded());
@@ -46,6 +51,9 @@ app.use(express.static(env.asset_path));
 
 // make the upload path avilable to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
+
+// for logger
+app.use(logger(env.morgan.mode, env.morgan.options));
 
 app.use(expressLayouts);
 // extract style and script form sub pages to layout
