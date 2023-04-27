@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" href="/css/post.css">
+<link rel="stylesheet" href="<%= assetPath('css/post.css') %>">
 <li id="post-<%= post._id %>">
     <p>
         <% if((locals.user) && (locals.user.id == post.user.id)) {%>
@@ -46,4 +46,4 @@
         </div>
     </div>
 </li>
-<script src="/javascript/post_comments.js"></script>
+<script src="<%= assetPath('javascript/post_comments.js') %>"></script>

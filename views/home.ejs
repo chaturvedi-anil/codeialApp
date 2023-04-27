@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/home.css">
+<link rel="stylesheet" href="<%= assetPath('css/home.css') %>">
 <div id="home-container">
     <section id="feed-posts">
         <% if(locals.user){%> 
@@ -33,10 +33,10 @@
     <%- include('_chat_box') -%>
 </div>
 
-<script src="/javascript/home_posts.js"></script>
+<script src="<%= assetPath('javascript/home_posts.js') %>"></script>
 
 <!-- CHANGE :: import the script file for toggle likes -->
-<script src="/javascript/toggle_likes.js"></script>
+<script src="<%= assetPath('javascript/toggle_likes.js') %>"></script>
 <script>
     $('.toggle-like-btn').each(function(){
         let self = this;
@@ -44,7 +44,7 @@
     });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js" integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="/javascript/chat_engine.js"></script>
+<script src="assetPath('javascript/chat_engine.js')"></script>
 <!-- invoking chatengine class -->
 <% if(locals.user) { %>
     <script>

@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" href="/css/comments.css">
+<link rel="stylesheet" href="<%= assetPath('css/comments.css') %>">
 <li id="comment-<%=comment._id%>">
     <p>
         <% if((locals.user) && (locals.user.id == comment.user.id)) {%>

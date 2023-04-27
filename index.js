@@ -6,6 +6,8 @@ const logger=require('morgan');
 const cookieParser = require('cookie-parser');
 const port = 8000;
 const app= express();
+// for accessing helper function
+require('./config/view-helpers')(app);
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
 
