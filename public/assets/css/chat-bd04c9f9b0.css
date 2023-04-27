@@ -1,0 +1,28 @@
+#chat-box {
+  position: fixed;
+  bottom: 0;
+  right: 10px;
+  height: 350px;
+  width: 250px;
+  border: 2px dashed black; }
+  #chat-box #other-message {
+    position: absolute;
+    left: 2px;
+    background-color: brown;
+    color: white; }
+  #chat-box #sender-message {
+    position: absolute;
+    top: 50px;
+    right: 2px;
+    background-color: royalblue;
+    color: white; }
+  #chat-box #input-btn-container {
+    position: absolute;
+    bottom: 0;
+    display: flex; }
+    #chat-box #input-btn-container input {
+      font-size: 1rem;
+      padding: 2px; }
+    #chat-box #input-btn-container #send-btn {
+      background-color: #58d958;
+      color: white; }

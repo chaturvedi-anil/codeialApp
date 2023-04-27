@@ -1,0 +1,7 @@
+#layout-footer {
+  background: grey;
+  color: white; }
+  #layout-footer div {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: flex-start; }
