@@ -43,7 +43,7 @@ if(env.name == 'development')
 } 
 
 // setting body parser middileware
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:false}));
 
 // setting cookies parser
 app.use(cookieParser());
