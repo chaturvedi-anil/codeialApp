@@ -132,3 +132,6 @@
 [0mGET /users/profile/css/user_profile.css [33m404[0m 25.663 ms - 173[0m
 [0mGET / [36m304[0m 33.515 ms - -[0m
 [0mGET /assetPath('javascript/chat_engine.js') [33m404[0m 15.370 ms - 185[0m
+[0mGET / [32m200[0m 108.221 ms - 10001[0m
+[0mGET /assetPath('javascript/chat_engine.js') [33m404[0m 16.800 ms - 185[0m
+[0mGET /favicon.ico [33m404[0m 3.583 ms - 150[0m
