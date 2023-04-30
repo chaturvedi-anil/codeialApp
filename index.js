@@ -55,7 +55,7 @@ app.use(express.static(env.asset_path));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 // for logger
-app.use(logger(env.morgan.mode, env.morgan.options));
+// app.use(logger(env.morgan.mode, env.morgan.options));
 
 app.use(expressLayouts);
 // extract style and script form sub pages to layout
